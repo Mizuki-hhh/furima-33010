@@ -12,11 +12,18 @@ class User < ApplicationRecord
     validates :birthday, presence: true
     validates :email, uniqueness: true
     validates :password_confirmation, presence: true
+
     PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
     validates_format_of :password, :password_confirmation,  with: PASSWORD_REGEX 
-    NAME_REGEX = /\A[ぁ-んァ-ン一-龥]/.freeze
-    validates_format_of :last_name, :first_name, with: NAME_REGEX
-    FURIGANA_REGEX = /\A[ァ-ヶー－]+\z/.freeze
-    validates_format_of :furigana_last_name, :furigana_first_name, with: FURIGANA_REGEX
+    
+    with_options presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々]+\z/ } do
+      validates :first_name
+      validates :last_name
+    end
+    with_options presence: true, format: { with: /\A[ァ-ヶー－]+\z/ } do
+      validates :furigana_last_name
+      validates :furigana_first_name
+    end
+
 
 end
