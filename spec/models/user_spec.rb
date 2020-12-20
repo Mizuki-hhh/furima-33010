@@ -120,7 +120,7 @@ describe User do
         @user.valid?
         expect(@user.errors.full_messages).to include("Furigana first name is invalid")
       end
-      it "生年月日が空では登録できない" do
+      it "birthdayが空では登録できない" do
         @user.birthday = nil
         @user.valid?
         expect(@user.errors.full_messages).to include("Birthday can't be blank")
