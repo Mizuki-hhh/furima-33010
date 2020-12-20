@@ -13,10 +13,10 @@ class User < ApplicationRecord
     validates :email, uniqueness: true
     validates :password_confirmation, presence: true
     PASSWORD_REGEX = /\A[a-zA-Z0-9]+\z/.freeze
-    validates_format_of :password, :password_confirmation,  with: PASSWORD_REGEX, message: '半角英数字混合で設定してください' 
+    validates_format_of :password, :password_confirmation,  with: PASSWORD_REGEX 
     NAME_REGEX = /\A[ぁ-んァ-ン一-龥]/.freeze
-    validates_format_of :last_name, :first_name, with: NAME_REGEX, message: '全角（漢字・ひらがな・カタカナ）で設定してください' 
+    validates_format_of :last_name, :first_name, with: NAME_REGEX
     FURIGANA_REGEX = /\A[ァ-ヶー－]+\z/.freeze
-    validates_format_of :furigana_last_name, :furigana_first_name, with: FURIGANA_REGEX, message: '全角（カタカナ）で設定してください' 
+    validates_format_of :furigana_last_name, :furigana_first_name, with: FURIGANA_REGEX
 
 end
