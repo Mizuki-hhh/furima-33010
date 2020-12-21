@@ -72,21 +72,6 @@ describe Item do
         @item.valid?
         expect(@item.errors.full_messages).to include("Price is not a number")
       end
-      it "" do
-      end
-      it "" do
-      end
-      it "" do
-      end
-      it "" do
-      end
-      it "" do
-      end
-      it "" do
-      end
-      it "" do
-      end
     end
   end
-
 end
