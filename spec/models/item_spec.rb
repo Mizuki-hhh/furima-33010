@@ -32,25 +32,50 @@ describe Item do
         @item.valid?
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end
+      it "カテゴリーの情報は1以外でないと登録できないこと" do
+        @item.category_id = 1
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Category must be other than 1")
+      end
       it "商品の状態についての情報がないと商品を出品できない" do
         @item.condition_id = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Condition can't be blank")
+      end
+      it "商品の状態については1以外でないと登録できないこと" do
+        @item.condition_id = 1
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Condition must be other than 1")
       end
       it "配送料の負担についての情報がないと商品を出品できない" do
         @item.shipping_charge_id = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping charge can't be blank")
       end
+      it "配送料の負担については1以外でないと登録できないこと" do
+        @item.shipping_charge_id = 1
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Shipping charge must be other than 1")
+      end
       it "発送元の地域についての情報がないと商品を出品できない" do
         @item.prefecture_id = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Prefecture can't be blank")
       end
+      it "発送元の地域については1以外でないと登録できないこと" do
+        @item.prefecture_id = 1
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Prefecture must be other than 1")
+      end
       it "発送までの日数についての情報がないと商品を出品できない" do
         @item.shipping_date_id = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping date can't be blank")
+      end
+      it "発送までの日数については1以外でないと登録できないこと" do
+        @item.shipping_date_id = 1
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Shipping date must be other than 1")
       end
       it "価格についての情報がないと商品を出品できない" do
         @item.price = nil
@@ -69,6 +94,16 @@ describe Item do
       end
       it "販売価格が全角数字だと商品を出品できない" do
         @item.price = "５５５"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
+      it "販売価格は半角英数混合では登録できないこと" do
+        @item.price = "123abc"
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
+      it "半角英語だけでは登録できないこと" do
+        @item.price = "abcdef"
         @item.valid?
         expect(@item.errors.full_messages).to include("Price is not a number")
       end
