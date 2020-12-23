@@ -7,7 +7,7 @@ class PurchaseRecord
     validates :prefecture_id, numericality: { other_than: 1, message: "can't be blank" }
     validates :city, format: {with: /\A[ぁ-んァ-ン一-龥]/}
     validates :house_number
-    validates :phone_number, format: {with: /\A[0-9]+\z/}
+    validates :phone_number, format: {with: /\A[0-9]+\z/}, length: { maximum: 11 }
   end
 
   def save

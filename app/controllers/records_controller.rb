@@ -1,10 +1,12 @@
 class RecordsController < ApplicationController
+  before_action :set_item, only: [:index, :create]
+  before_action :authenticate_user!, only: [:index, :show]
 
   def index
+    if @item.user_id == current_user.id
+      redirect_to root_path
+    end
     @purchase_record = PurchaseRecord.new
-    @item = Item.find(params[:item_id])
-
-  
   end
 
   def create
@@ -22,4 +24,7 @@ class RecordsController < ApplicationController
     params.require(:purchase_record).permit(:postal_code, :prefecture_id, :city, :house_number, :building_name, :phone_number, :user_id, :item_id, :record_id).merge(user_id: current_user.id, item_id: params[:item_id] )
   end
 
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
 end
