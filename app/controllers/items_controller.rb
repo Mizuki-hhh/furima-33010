@@ -3,7 +3,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @items = Item.all.order("created_at DESC")
+    @items = Item.includes(:user).order("created_at DESC")
   end
 
   def new
@@ -25,6 +25,9 @@ class ItemsController < ApplicationController
   def edit
     unless @item.user_id == current_user.id
       redirect_to action: :index
+    end
+    if user_signed_in? && @item.record.present?
+      return :index
     end
   end
 

@@ -6,6 +6,9 @@ class RecordsController < ApplicationController
     if @item.user_id == current_user.id
       redirect_to root_path
     end
+    if user_signed_in? && @item.record.present?
+      redirect_to root_path
+    end
     @purchase_record = PurchaseRecord.new
   end
 
