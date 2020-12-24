@@ -9,7 +9,7 @@ describe PurchaseRecord do
 
   describe '商品購入機能' do
     context '商品購入がうまくいくとき' do
-      it "全ての値が正しく入力されていれば商品の購入ができること" do
+      it "全ての値（token含む）が正しく入力されていれば商品の購入ができること" do
         expect(@purchase_record).to be_valid
       end
       it "bilding_nameが空でも商品の購入ができること" do
@@ -73,6 +73,11 @@ describe PurchaseRecord do
         @purchase_record.item_id = nil
         @purchase_record.valid?
         expect(@purchase_record.errors.full_messages).to include("Item can't be blank")
+      end
+      it "tokenが空では登録できないこと" do
+        @purchase_record.token = nil
+        @purchase_record.valid?
+        expect(@purchase_record.errors.full_messages).to include("Token can't be blank")
       end
     end
   end
