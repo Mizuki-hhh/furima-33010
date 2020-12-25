@@ -23,11 +23,8 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    unless @item.user_id == current_user.id
-      redirect_to action: :index
-    end
-    if user_signed_in? && @item.record.present?
-      return :index
+    if @item.record.present? || @item.user_id != current_user.id
+      redirect_to root_path
     end
   end
 
