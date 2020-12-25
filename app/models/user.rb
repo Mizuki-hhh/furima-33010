@@ -4,6 +4,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :items
+  has_many :records
 
   with_options presence: true do
     validates :nickname
@@ -11,7 +12,7 @@ class User < ApplicationRecord
     validates :password_confirmation
   end
 
-  validates :email, uniqueness: true
+  validates :email, uniqueness: { case_sensitive: false }
     
   PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
   validates_format_of :password, :password_confirmation,  with: PASSWORD_REGEX 

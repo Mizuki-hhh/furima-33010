@@ -11,6 +11,6 @@ window.addEventListener('load', () => {
 
     const charge = addTaxDom.innerHTML;
     profitFee.innerHTML = Math.floor(inputValue - charge);
-    })
+  })
 });
 
