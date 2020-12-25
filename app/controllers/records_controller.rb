@@ -7,7 +7,7 @@ class RecordsController < ApplicationController
       redirect_to root_path
     end
     if user_signed_in? && @item.record.present?
-      return root_path
+      redirect_to root_path
     end
     @purchase_record = PurchaseRecord.new
   end
