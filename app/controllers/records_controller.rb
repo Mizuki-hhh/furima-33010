@@ -1,6 +1,6 @@
 class RecordsController < ApplicationController
   before_action :set_item, only: [:index, :create]
-  before_action :authenticate_user!, only: [:index, :show]
+  before_action :authenticate_user!, only: [:index]
 
   def index
     if @item.user_id == current_user.id or @item.record.present?
