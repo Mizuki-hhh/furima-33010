@@ -28,7 +28,6 @@ class Item < ApplicationRecord
     validates :prefecture_id
     validates :shipping_charge_id
     validates :shipping_date_id
-    validates :category_id
   end
 
   with_options presence: true, format: { with: /\A[0-9]+\z/ } do
