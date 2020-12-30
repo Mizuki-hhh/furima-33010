@@ -5,18 +5,16 @@ if (document.URL.match( /new/ ) || document.URL.match( /edit/ )) {
     const createImageHTML = (blob) => {
 
       const imageElement = document.createElement('div');
-      // 表示する画像を生成
       const blobImage = document.createElement('img');
       blobImage.setAttribute('src', blob);
 
-      // 生成しｓたHTMLの要素をブラウザに表示させる
+      blobImage.width = 120;
+
       imageElement.appendChild(blobImage);
       ImageList.appendChild(imageElement);
-
     };
 
     document.getElementById('item-image').addEventListener('change', function(e){
-      // 画像削除
       const imageContent = document.querySelector('img');
       if (imageContent){
         imageContent.remove();
