@@ -14,7 +14,7 @@ class Item < ApplicationRecord
   with_options presence: true do
     validates :name
     validates :explanation
-    validates :image
+    validates :images
     validates :category_id
     validates :condition_id
     validates :shipping_charge_id
