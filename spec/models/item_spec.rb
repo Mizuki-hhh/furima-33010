@@ -9,13 +9,22 @@ describe Item do
       it "商品の画像、名前、説明、カテゴリー情報、商品の状態、配送料の負担、配送元の地域、発送までの日数、価格について適切に記入すると商品を出品できる" do
         expect(@item).to be_valid
       end
+      it "商品の画像が2枚以上でも商品を出品できること" do
+        @item.images.attach(io: File.open('public/images/test_image2.png'), filename: 'test_image2.png')
+        expect(@item).to be_valid
+      end
     end
 
     context '商品出品ができないとき' do
       it "商品の画像がないと商品を出品できない" do
-        @item.image = nil
+        @item.images = nil
         @item.valid?
-        expect(@item.errors.full_messages).to include("Image can't be blank")
+        expect(@item.errors.full_messages).to include("Images can't be blank")
+      end
+      it "商品の画像がないと商品を出品できない" do
+        @item.images = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Images can't be blank")
       end
       it "商品名がないと商品を出品できない" do
         @item.name = nil
