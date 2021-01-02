@@ -25,8 +25,8 @@ RSpec.describe "商品出品機能", type: :system do
       expect(page).to have_content('出品する')
       # 商品出品ページに移動する
       visit new_item_path
-      # # パンくずリストの「商品出品」が表示されていることを確認する
-      # expect(page).to have_content('商品出品')
+      # パンくずリストの「商品出品」が表示されていることを確認する
+      expect(page).to have_content('商品出品')
       # 添付する画像を定義する
       image_path = Rails.root.join('public/images/test_image.png')
       # 画像選択フォームに画像を添付する

@@ -27,6 +27,11 @@ crumb :login do |user|
   parent :root, user
 end
 
+crumb :putup do
+  link "商品出品", new_item_path
+  parent :root
+end
+
 # crumb :projects do
 #   link "Projects", projects_path
 # end
