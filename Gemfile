@@ -80,3 +80,5 @@ group :production do
 end
 
 gem "gretel"
+
+gem 'rails-i18n'
