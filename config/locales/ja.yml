@@ -8,6 +8,8 @@ ja:
        furigana_last_name: フリガナ（名字）
        furigana_first_name: フリガナ（名前）
        birthday: 生年月日
+       user: ユーザー
+       item: 商品
      item:
        text: テキスト
        name: 商品名
@@ -19,6 +21,8 @@ ja:
        shipping_date_id: 配送までの日数
        price: 価格
        images: 画像
+       item: 商品
+       user: ユーザー
  activemodel:
    attributes:
      purchase_record:
@@ -29,4 +33,5 @@ ja:
        building_name: 建物名
        phone_number: 電話番号
        token: クレジットカード情報
-       
+       user_id: ユーザー
+       item_id: 商品
