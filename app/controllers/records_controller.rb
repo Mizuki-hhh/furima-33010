@@ -3,7 +3,7 @@ class RecordsController < ApplicationController
   before_action :authenticate_user!, only: [:index]
 
   def index
-    if @item.user_id == current_user.id || @item.record.present?
+    if (@item.user_id == current_user.id) || @item.record.present?
       redirect_to root_path
     end
     @purchase_record = PurchaseRecord.new
