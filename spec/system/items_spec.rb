@@ -261,7 +261,6 @@ RSpec.describe '商品削除機能', type: :system do
     end
     it '売却済みの商品には削除ボタンがない' do
       # 
-      # 
     end
   end
 end
