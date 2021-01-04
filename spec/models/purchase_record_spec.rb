@@ -27,7 +27,7 @@ describe PurchaseRecord do
       it "postal_codeが半角のハイフンを含んだ正しい形式でないと購入できないこと" do
         @purchase_record.postal_code = "2270066"
         @purchase_record.valid?
-        expect(@purchase_record.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
+        expect(@purchase_record.errors.full_messages).to include("Postal code is invalid.")
       end
       it "prefecture_idが空だと購入できない" do
         @purchase_record.prefecture_id = nil
