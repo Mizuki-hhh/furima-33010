@@ -16,11 +16,7 @@ RSpec.describe "商品出品機能", type: :system do
       # Basic認証を経てトップページへ遷移する
       basic_pass root_path
       # ログインする
-      visit new_user_session_path
-      fill_in 'email', with: @user.email
-      fill_in 'password', with: @user.password
-      find('input[name="commit"]').click
-      expect(current_path).to eq root_path
+      sign_in(@user)
       # 商品出品ページへのリンクがあることを確認する
       expect(page).to have_content('出品する')
       # 商品出品ページに移動する
@@ -47,13 +43,13 @@ RSpec.describe "商品出品機能", type: :system do
       # トップページに遷移することを確認する
       expect(current_path).to eq root_path
       # トップページには先ほど出品した商品が表示されていることを確認する（画像）
-      expect(page).to have_selector("img")
+      expect(page).to have_selector("img[src*='test_image.png']")
       # トップページには先ほど出品した商品が表示されていることを確認する（商品名）
       expect(page).to have_content(@item.name)
       # トップページには先ほど出品した商品が表示されていることを確認する（価格）
       expect(page).to have_content(@item.price)
       # トップページには先ほど出品した商品が表示されていることを確認する（配送料の負担）
-      expect(page).to have_content(@item.shipping_charge_id)
+      expect(page).to have_content('着払い')
       # 
     end
   end
@@ -69,11 +65,7 @@ RSpec.describe "商品出品機能", type: :system do
       # トップページに遷移する
       visit root_path
       # ログインする
-      visit new_user_session_path
-      fill_in 'email', with: @user.email
-      fill_in 'password', with: @user.password_confirmation
-      find('input[name="commit"]').click
-      expect(current_path).to eq root_path
+      sign_in(@user)
       # 商品出品ページへのリンクがあることを確認する
       expect(page).to have_content('出品する')
       # 商品出品ページに移動する
@@ -107,12 +99,8 @@ RSpec.describe "商品編集機能" do
       # Basic認証を経てトップページにいる
       basic_pass root_path
       # 商品1を出品したユーザーでログインする
-      visit new_user_session_path
-      fill_in 'email', with: @item1.user.email
-      fill_in 'password', with: @item1.user.password
-      find('input[name="commit"]').click
-      expect(current_path).to eq root_path
-      # 商品詳細ページへ移動する
+      sign_in(@item1.user)
+      # 商品1の詳細ページへ移動する
       visit item_path(@item1)
       # 商品1に編集ボタンがあることを確認する
       expect(page).to have_content('商品の編集')
@@ -162,39 +150,35 @@ RSpec.describe "商品編集機能" do
       }.to change { Item.count }.by(0)
       # 商品詳細ページに遷移したことを確認する
       expect(current_path).to eq item_path(@item1)
-      # 詳細商品ページには先ほど変更した商品の情報が存在することを確認する（画像）
-      expect(page).to have_selector("img")
-      # 詳細商品ページには先ほど変更した商品の情報が存在することを確認する（テキスト情報）
+      # 商品詳細ページには先ほど変更した商品の情報が存在することを確認する（画像）
+      expect(page).to have_selector("img[src*='test_image2.png']")
+      # 商品詳細ページには先ほど変更した商品の情報が存在することを確認する（テキスト情報）
       expect(page).to have_content("#{@item1.name}+編集した商品名")
       expect(page).to have_content("#{@item1.explanation}+編集した商品説明")
-      # 詳細商品ページには先ほど変更した商品の情報が存在することを確認する（プルダウン選択）
+      # 商品詳細ページには先ほど変更した商品の情報が存在することを確認する（プルダウン選択）
       expect(page).to have_content(@item1.category_id)
       expect(page).to have_content(@item1.condition_id)
       expect(page).to have_content(@item1.shipping_charge_id)
       expect(page).to have_content(@item1.prefecture_id)
       expect(page).to have_content(@item1.shipping_date_id)
-      # 詳細商品ページには先ほど変更した商品の情報が存在することを確認する（価格）
+      # 商品詳細ページには先ほど変更した商品の情報が存在することを確認する（価格）
       expect(page).to have_content(@item1.price)
       # トップページに遷移する
       visit root_path
       # トップページには先ほど変更した内容の商品が存在することを確認する（画像）
-      expect(page).to have_selector("img")
+      expect(page).to have_selector("img[src*='test_image2.png']")
       # トップページには先ほど変更した内容の商品が存在することを確認する（商品名）
       expect(page).to have_content(@item1.name)
       # トップページには先ほど変更した内容の商品が存在することを確認する（価格）
       expect(page).to have_content(@item1.price)
       # トップページには先ほど変更した内容の商品が存在することを確認する（配送料の負担）
-      expect(page).to have_content(@item1.shipping_charge_id)
+      expect(page).to have_content('着払い')
     end
   end
   context '商品編集ができないとき' do
     it 'ログインしたユーザーは自分以外が出品した商品の編集画面には遷移できない' do
       # 商品1を出品したユーザーでログインする
-      visit new_user_session_path
-      fill_in 'email', with: @item1.user.email
-      fill_in 'password', with: @item1.user.password
-      find('input[name="commit"]').click
-      expect(current_path).to eq root_path
+      sign_in(@item1.user)
       # 商品2の商品ページへ移動する
       visit item_path(@item2)
       # 商品2に編集ボタンがないことを確認する
@@ -217,3 +201,112 @@ RSpec.describe "商品編集機能" do
   end
 end
 
+RSpec.describe '商品削除機能', type: :system do
+  before do
+    @item1 = FactoryBot.create(:item)
+  end
+  context '商品削除ができるとき' do
+    it 'ログインしたユーザーは自らが出品した商品の削除ができる' do
+      # Basic認証を経てトップページにいる
+      basic_pass root_path
+      # 商品1を出品したユーザーでログインする
+      sign_in(@item1.user)
+      # 商品1の詳細ページへ移動する
+      visit item_path(@item1)
+      # 商品1に「削除」ボタンがあることを確認する
+      expect(page).to have_content('削除')
+      # 商品を削除するとレコードの数が1減ることを確認する
+      expect {
+        find_link('削除', href: item_path(@item1)).click
+      }.to change { Item.count }.by(-1)
+      # 削除が完了するとトップページへ遷移する
+      expect(current_path).to eq root_path
+      # トップページには商品1の内容が存在しないことを確認する（画像）
+      expect(page).to have_no_selector("img[src*='test_image.png']")
+      # トップページには商品1の内容が存在しないことを確認する（商品名）
+      expect(page).to have_no_content(@item1.name)
+      # トップページには商品1の内容が存在しないことを確認する（価格）
+      expect(page).to have_no_content(@item1.price)
+      # トップページには商品1の内容が存在しないことを確認する（配送料の負担）
+      expect(page).to have_no_content("着払い")
+    end
+  end
+  context '商品が削除できないとき' do
+    before do
+      @item2 = FactoryBot.create(:item)
+    end
+    it 'ログインしたユーザーは自分以外が出品した商品の削除ができない' do
+      # Basic認証を経てトップページにいる
+      basic_pass root_path
+      # 商品1を出品したユーザーでログインする
+      sign_in(@item1.user)
+      # 商品2の詳細ページへ移動する
+      visit item_path(@item2)
+      # 商品2に「削除」ボタンがないことを確認する
+      expect(page).to have_no_content('削除')
+    end
+    it 'ログインしていないと商品の削除ボタンがない' do
+      # トップページに移動する
+      visit root_path
+      # 商品1の詳細ページに移動する
+      visit item_path(@item1)
+      # 商品1に「削除」ボタンがないことを確認する
+      expect(page).to have_no_content('削除')
+      # トップページに戻る
+      visit root_path
+      # 商品2の詳細ページに移動する
+      visit item_path(@item2)
+      # 商品2に「削除」ボタンがないことを確認する
+      expect(page).to have_no_content('削除')
+    end
+    it '売却済みの商品には削除ボタンがない' do
+      # 
+      # 
+    end
+  end
+end
+
+RSpec.describe '出品商品詳細', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+    @item = FactoryBot.create(:item)
+  end
+  it 'ログインしたユーザーは出品商品詳細ページに遷移して商品の情報が表示される' do
+    # Basic認証を経てトップページにいる
+    basic_pass root_path
+    # ログインする
+    sign_in(@user)
+    # 商品詳細ページに遷移する
+    visit item_path(@item)
+    # 詳細ページに画像、商品（テキスト）情報、価格が含まれていることを確認する
+    expect(page).to have_selector("img[src*='test_image.png']")
+    expect(page).to have_content(@item.name)
+    expect(page).to have_content(@item.explanation)
+    expect(page).to have_content(@item.category_id)
+    expect(page).to have_content(@item.condition_id)
+    expect(page).to have_content(@item.shipping_charge_id)
+    expect(page).to have_content(@item.prefecture_id)
+    expect(page).to have_content(@item.shipping_date_id)
+    expect(page).to have_content(@item.price)
+    # 「購入画面に進む」ボタンが表示されていることを確認する
+    expect(page).to have_content('購入画面に進む')
+  end
+  it 'ログインしていない状態だと出品商品詳細ページに遷移できるものの購入ボタンが表示されない' do
+    # トップページに移動する
+    visit root_path
+    # 商品詳細ページに遷移する
+    visit item_path(@item)
+    # 詳細ページに画像、商品（テキスト）情報、価格が含まれていることを確認する
+    expect(page).to have_selector("img[src*='test_image.png']")
+    expect(page).to have_content(@item.name)
+    expect(page).to have_content(@item.explanation)
+    expect(page).to have_content(@item.category_id)
+    expect(page).to have_content(@item.condition_id)
+    expect(page).to have_content(@item.shipping_charge_id)
+    expect(page).to have_content(@item.prefecture_id)
+    expect(page).to have_content(@item.shipping_date_id)
+    expect(page).to have_content(@item.price)
+    # 「購入画面に進む」ボタンが表示されないことを確認する
+    expect(page).to have_no_content('購入画面に進む')
+  end
+end
