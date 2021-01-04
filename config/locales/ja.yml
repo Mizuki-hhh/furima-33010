@@ -1,0 +1,32 @@
+ja:
+ activerecord:
+   attributes:
+     user:
+       nickname: ニックネーム
+       first_name: 名前
+       last_name: 名字
+       furigana_last_name: フリガナ（名字）
+       furigana_first_name: フリガナ（名前）
+       birthday: 生年月日
+     item:
+       text: テキスト
+       name: 商品名
+       explanation: 商品の説明
+       category_id: カテゴリー
+       condition_id: 商品の状態
+       prefecture_id: 都道府県
+       shipping_charge_id: 配送料の負担
+       shipping_date_id: 配送までの日数
+       price: 価格
+       images: 画像
+ activemodel:
+   attributes:
+     purchase_record:
+       postal_code: 郵便番号
+       city: 市区町村
+       prefecture_id: 都道府県
+       house_number: 番地
+       building_name: 建物名
+       phone_number: 電話番号
+       token: クレジットカード情報
+       
