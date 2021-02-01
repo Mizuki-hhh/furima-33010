@@ -1,8 +1,9 @@
-if (document.URL.match( /new/ ) || document.URL.match( /edit/ )) {
+if (document.URL.match( /new/ ) || document.URL.match( /edit/ ) || document.URL.match( /items/ )) {
   document.addEventListener('DOMContentLoaded', function() {
     const ImageList = document.getElementById('image-list')
 
     const createImageHTML = (blob) => {
+
       const imageElement = document.createElement('div')
       imageElement.setAttribute('class', "image-element")
       let imageElementNum = document.querySelectorAll('.image-element').length
@@ -31,10 +32,17 @@ if (document.URL.match( /new/ ) || document.URL.match( /edit/ )) {
     document.getElementById('item-image').addEventListener('change', (e) => {
       let file = e.target.files[0];
       let blob = window.URL.createObjectURL(file);
-      
+
       createImageHTML(blob)
 
     });
+
+    document.getElementsByClassName('item-box-img')[0].remove();
+    document.getElementsByClassName('item-box-img')[0].remove();
+    document.getElementsByClassName('item-box-img')[0].remove();
+    document.getElementsByClassName('item-box-img')[0].remove();
+
+
   });
 }
 
